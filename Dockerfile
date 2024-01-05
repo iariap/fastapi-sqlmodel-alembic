@@ -2,7 +2,7 @@
 FROM python:3.12-slim-bookworm
 
 # set working directory
-WORKDIR /app
+WORKDIR /backend
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -13,10 +13,12 @@ ENV PYTHONUNBUFFERED 1
 #   && apt-get -y install gcc postgresql \
 #   && apt-get clean
 
+# add app
+ADD app app
+
 # install python dependencies
 RUN pip install --upgrade pip
-COPY ./pyproject.toml .
+ADD ./app/pyproject.toml .
 RUN pip install .
 
-# add app
-COPY . .
+

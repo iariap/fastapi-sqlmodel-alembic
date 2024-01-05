@@ -1,9 +1,8 @@
+from app.base.crud import GenericCRUD
+from app.base.db import DBSession
 from fastapi import APIRouter
 from fastapi_pagination import LimitOffsetPage
 from pydantic import BaseModel
-
-from base.crud import GenericCRUD
-from base.db import DBSession
 
 
 class GenericCrudRouter(APIRouter):
@@ -49,9 +48,7 @@ class GenericCrudRouter(APIRouter):
         ) -> GetSchemaType:
             return await self.crud.create(db, obj_in=obj_in)
 
-        @self.put(
-            "/{id}", name=f"Updates an existing {model_type.__name__.lower()}"
-        )
+        @self.put("/{id}", name=f"Updates an existing {model_type.__name__.lower()}")
         async def update(
             id: str,
             obj_in: UpdateSchemaType,

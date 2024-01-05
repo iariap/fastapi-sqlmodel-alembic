@@ -3,7 +3,7 @@
 # Variables
 DOCKER_COMPOSE = docker compose
 COMPOSE_FILE = -f docker-compose.yml
-ALEMBIC = alembic -c /app/alembic.ini
+ALEMBIC = alembic -c /backend/app/alembic.ini
 RUFF = ruff
 MAKEFLAGS += --no-print-directory
 
@@ -19,11 +19,11 @@ help:
 ##@ Docker
 # Start Docker containers
 up:
-	$(DOCKER_COMPOSE) $(COMPOSE_FILE) up -d
+	$(DOCKER_COMPOSE) $(COMPOSE_FILE) up --remove-orphans
 
 # Stop Docker containers
 down:
-	$(DOCKER_COMPOSE) $(COMPOSE_FILE) down
+	$(DOCKER_COMPOSE) $(COMPOSE_FILE) down --remove-orphans
 
 ##@ FastAPI
 # Run backend application
@@ -57,7 +57,7 @@ alembic-downgrade:
 ##@ Alembic
 # Create a new Alembic revision
 alembic-revision:
-    $(DOCKER_COMPOSE) $(COMPOSE_FILE) run --rm backend $(ALEMBIC) revision --autogenerate -m "$(m)"
+	$(DOCKER_COMPOSE) $(COMPOSE_FILE) run --rm backend $(ALEMBIC) revision --autogenerate -m "$(m)"
 
 # Create a new Alembic revision with a message
 migrate:
