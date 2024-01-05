@@ -24,15 +24,13 @@ async def init_db():
 
 
 async def get_session() -> AsyncSession:
-    session = SessionLocal()
-    try:
-        yield session
-        await session.commit()
-    except Exception as e:
-        await session.rollback()
-        raise e
-    finally:
-        await session.close()
+    async with SessionLocal() as session:
+        try:
+            yield session
+            await session.commit()
+        except Exception as e:
+            await session.rollback()
+            raise e
 
 
 DBSession = Annotated[AsyncSession, Depends(get_session)]
