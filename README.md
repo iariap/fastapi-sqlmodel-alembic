@@ -1,5 +1,19 @@
 # funspark
 
+## Starting with the project
+
+To start the aplication run the command
+
+```sh
+make start
+```
+
+To stop the aplication rin the command:
+
+```sh
+make stop
+```
+
 ## Generic CRUD
 
 The GenericCRUD class provides a set of standard CRUD (Create, Read, Update, Delete) operations for a given SQLAlchemy model. This class simplifies the process of interfacing with the database by abstracting common operations.
