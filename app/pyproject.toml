@@ -52,9 +52,6 @@ ignore = [
 "__init__.py" = ["F401"]
 
 
-[tool.ruff.isort]
-known-third-party = ["fastapi", "pydantic", "starlette"]
-
 [tool.ruff.pyupgrade]
 # Preserve types, even if a file imports `from __future__ import annotations`.
 keep-runtime-typing = true
