@@ -1,10 +1,24 @@
-## funspark
+# funspark
 
-# Generic CRUD
+## Starting with the project
+
+To start the aplication run the command
+
+```sh
+make start
+```
+
+To stop the aplication rin the command:
+
+```sh
+make stop
+```
+
+## Generic CRUD
 
 The GenericCRUD class provides a set of standard CRUD (Create, Read, Update, Delete) operations for a given SQLAlchemy model. This class simplifies the process of interfacing with the database by abstracting common operations.
 
-# Usage
+### Usage
 
 To use the GenericCRUD class, you need to define a SQLAlchemy model and corresponding Pydantic schema classes for create and update operations. Here's an example for a hypothetical Item model:
 
@@ -30,7 +44,7 @@ class SongUpdate(SongBase):
 
 ```
 
-# Creating a CRUD Object
+### Creating a CRUD Object
 
 ```python
 item_crud = GenericCRUD[Item, ItemCreate, ItemUpdate](Item)
@@ -38,17 +52,17 @@ item_crud = GenericCRUD[Item, ItemCreate, ItemUpdate](Item)
 
 ## Generic Router
 
-# Overview
+### Overview
 
 The `GenericCrudRouter` class is a customizable router for creating CRUD (Create, Read, Update, Delete) endpoints in a FastAPI application. It simplifies the process of setting up standard CRUD operations for a given SQLAlchemy model and corresponding Pydantic schemas.
 
-# Features
+### Features
 
 - **Automated Route Creation**: Automatically creates standard CRUD routes for a specified SQLAlchemy model.
 - **Customizable**: Easily define custom Pydantic schemas for different operations (Create, Read, Update).
 - **Pagination**: Supports pagination for retrieving lists of items.
 
-# How It Works
+### How It Works
 
 The `GenericCrudRouter` class takes a SQLAlchemy model and Pydantic schema classes as inputs and generates standard CRUD routes. These routes include:
 
@@ -58,7 +72,7 @@ The `GenericCrudRouter` class takes a SQLAlchemy model and Pydantic schema class
 - `PUT /<model_name>s/{id}`: Update an existing item by ID.
 - `DELETE /<model_name>s/{id}`: Delete an existing item by ID.
 
-# Usage
+### Usage
 
 To use the `GenericCrudRouter`, import the class and create an instance by passing the SQLAlchemy model and the Pydantic schema classes for the Create, Update, and Read operations.
 
@@ -72,7 +86,43 @@ from songs.models import Song, SongCreate, SongUpdate
 router = GenericCrudRouter(Song, Song, SongUpdate, SongCreate)
 ```
 
-## Alembic
+## Setting Up Ruff for Code Linting
+
+### Installation
+
+To improve code quality and consistency, we use `ruff` as a linting tool in our project. Follow these steps to install and configure `ruff`:
+
+### Configuring Pre-Commit Hook
+
+After installing project dependencies, you need to set it up as a pre-commit hook:
+
+**Install the Pre-Commit Hook**: Run the following command to set up the git hook scripts:
+
+```bash
+pre-commit install
+```
+
+This command installs the pre-commit hook into your `.git/hooks/pre-commit`.
+
+### Running Ruff
+
+With the pre-commit hook installed, `ruff` will automatically run on the staged files each time you commit. To manually run `ruff` on all files in the project, you can use the following command:
+
+```bash
+pre-commit run ruff --all-files
+```
+
+### Updating Ruff Version
+
+To update to a newer version of `ruff`, change the `rev` value in the `.pre-commit-config.yaml` file to the desired version, and then update the pre-commit hooks with:
+
+```bash
+pre-commit autoupdate
+```
+
+This will update your hooks to the latest versions specified in the configuration file.
+
+## Alembic Workflow
 
 Using Alembic involves several common steps for managing database migrations in your FastAPI application. Here's a general workflow you can follow:
 
