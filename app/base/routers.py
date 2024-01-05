@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from fastapi_pagination import LimitOffsetPage
 from pydantic import BaseModel
 
-from base.crud import CRUDBase
+from base.crud import GenericCRUD
 from base.db import DBSession
 
 
@@ -24,7 +24,7 @@ class GenericCrudRouter(APIRouter):
         """
         obj_name = f"{model_type.__name__.lower()}s"
         super().__init__(prefix=f"/{obj_name}", tags=[obj_name.capitalize()])
-        self.crud = CRUDBase(model_type)
+        self.crud = GenericCRUD(model_type)
 
         @self.get("", name=f"Gets all {model_type.__name__.capitalize()}s")
         async def get_all(
