@@ -57,9 +57,7 @@ alembic-downgrade:
 ##@ Alembic
 # Create a new Alembic revision
 alembic-revision:
-	@read -p "Enter revision message: " REVISION_MESSAGE; \
-	$(DOCKER_COMPOSE) $(COMPOSE_FILE) run --rm backend $(ALEMBIC) revision --autogenerate -m "$$REVISION_MESSAGE"
-
+    $(DOCKER_COMPOSE) $(COMPOSE_FILE) run --rm backend $(ALEMBIC) revision --autogenerate -m "$(m)"
 
 # Create a new Alembic revision with a message
 migrate:
