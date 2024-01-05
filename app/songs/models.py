@@ -1,5 +1,4 @@
-from sqlmodel import Field, SQLModel
-from typing import Optional
+from sqlmodel import SQLModel
 
 from base.models import TimestampModel, UUIDModel
 
@@ -7,7 +6,7 @@ from base.models import TimestampModel, UUIDModel
 class SongBase(SQLModel):
     name: str
     artist: str
-    year: Optional[int] = None
+    year: int | None = None
 
 
 class Song(SongBase, TimestampModel, UUIDModel, table=True):

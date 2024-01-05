@@ -1,8 +1,8 @@
-from base.crud import CRUDBase
+from base.crud import GenericCRUD
 from songs.models import Song, SongCreate, SongUpdate
 
 
-class CRUDSong(CRUDBase[Song, SongCreate, SongUpdate]):
+class CRUDSong(GenericCRUD[Song, SongCreate, SongUpdate]):
     ...
 
 

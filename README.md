@@ -1,5 +1,77 @@
 # funspark
 
+# Generic CRUD
+
+The GenericCRUD class provides a set of standard CRUD (Create, Read, Update, Delete) operations for a given SQLAlchemy model. This class simplifies the process of interfacing with the database by abstracting common operations.
+
+## Usage
+
+To use the GenericCRUD class, you need to define a SQLAlchemy model and corresponding Pydantic schema classes for create and update operations. Here's an example for a hypothetical Item model:
+
+```python
+from sqlmodel import SQLModel
+
+from base.models import TimestampModel, UUIDModel
+
+
+class SongBase(SQLModel):
+    name: str
+    artist: str
+    year: int | None = None
+
+class Song(SongBase, TimestampModel, UUIDModel, table=True):
+    ...
+
+class SongCreate(SongBase):
+    ...
+
+class SongUpdate(SongBase):
+    ...
+
+```
+
+## Creating a CRUD Object
+
+```python
+item_crud = GenericCRUD[Item, ItemCreate, ItemUpdate](Item)
+```
+
+# Generic Router
+
+## Overview
+
+The `GenericCrudRouter` class is a customizable router for creating CRUD (Create, Read, Update, Delete) endpoints in a FastAPI application. It simplifies the process of setting up standard CRUD operations for a given SQLAlchemy model and corresponding Pydantic schemas.
+
+## Features
+
+- **Automated Route Creation**: Automatically creates standard CRUD routes for a specified SQLAlchemy model.
+- **Customizable**: Easily define custom Pydantic schemas for different operations (Create, Read, Update).
+- **Pagination**: Supports pagination for retrieving lists of items.
+
+## How It Works
+
+The `GenericCrudRouter` class takes a SQLAlchemy model and Pydantic schema classes as inputs and generates standard CRUD routes. These routes include:
+
+- `GET /<model_name>s`: Retrieve a paginated list of items.
+- `GET /<model_name>s/{id}`: Retrieve a single item by ID.
+- `POST /<model_name>s`: Create a new item.
+- `PUT /<model_name>s/{id}`: Update an existing item by ID.
+- `DELETE /<model_name>s/{id}`: Delete an existing item by ID.
+
+## Usage
+
+To use the `GenericCrudRouter`, import the class and create an instance by passing the SQLAlchemy model and the Pydantic schema classes for the Create, Update, and Read operations.
+
+Here is an example of using the `GenericCrudRouter` for a `Song` model:
+
+```python
+from base.routers import GenericCrudRouter
+from songs.models import Song, SongCreate, SongUpdate
+
+# Create a CRUD router for the Song model
+router = GenericCrudRouter(Song, Song, SongUpdate, SongCreate)
+```
+
 # Alembic
 
 Using Alembic involves several common steps for managing database migrations in your FastAPI application. Here's a general workflow you can follow:

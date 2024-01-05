@@ -9,7 +9,7 @@ from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 
-class CRUDBase[
+class GenericCRUD[
     ModelType: BaseModel,
     CreateSchemaType: BaseModel,
     UpdateSchemaType: BaseModel,
