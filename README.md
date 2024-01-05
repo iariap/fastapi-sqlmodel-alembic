@@ -5,13 +5,13 @@
 To start the aplication run the command
 
 ```sh
-make start
+make up
 ```
 
 To stop the aplication rin the command:
 
 ```sh
-make stop
+make down
 ```
 
 ## Generic CRUD
