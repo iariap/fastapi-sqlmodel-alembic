@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+
+  backend:
+    build: ./app
+    command: uvicorn main:app --reload --workers 1 --host 0.0.0.0 --port 8000
+    volumes:
+      - ./app:/app
+    ports:
+      - 8000:8000
+      - 5678:5678
+    env_file:
+      - ./app/.env
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=fanspark

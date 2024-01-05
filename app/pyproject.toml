@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling >= 1.13.0"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "fanspark"
+description = "FanSpark proposal template"
+version = "0.0.1"
+dependencies = [
+    "fastapi==0.108.0",
+    "uvicorn==0.22.0",
+    "sqlmodel==0.0.14",
+    "SQLAlchemy==2.0.25",
+    "alembic==1.13.1",
+    "asyncpg==0.29.0",
+    "pydantic-settings==2.1.0",
+    "fastapi-pagination==0.12.14",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["backend"]
