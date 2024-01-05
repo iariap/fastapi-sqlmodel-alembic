@@ -1,9 +1,8 @@
-from typing import Any, Dict, Optional, Type
+from typing import Any, Dict, Type
 
 from fastapi.encoders import jsonable_encoder
 from fastapi_pagination import LimitOffsetPage
 from fastapi_pagination.ext.sqlalchemy import paginate as fap_paginate
-
 from pydantic import BaseModel
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -26,15 +25,11 @@ class GenericCRUD[
         self.model_type = model_type
 
     async def get(self, db: AsyncSession, id: Any) -> ModelType:
-        result = await db.exec(
-            select(self.model_type).filter(self.model_type.id == id)
-        )
+        result = await db.exec(select(self.model_type).filter(self.model_type.id == id))
         answer = result.one()
         return answer
 
-    async def create(
-        self, db: AsyncSession, *, obj_in: CreateSchemaType
-    ) -> ModelType:
+    async def create(self, db: AsyncSession, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)
         db_obj = self.model_type(**obj_in_data)  # type: ignore
         db.add(db_obj)
