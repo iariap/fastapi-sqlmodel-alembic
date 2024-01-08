@@ -1,8 +1,9 @@
-from app.base.crud import GenericCRUD
-from app.base.db import DBSession
 from fastapi import APIRouter
 from fastapi_pagination import LimitOffsetPage
 from pydantic import BaseModel
+
+from app.base.crud import GenericCRUD
+from app.base.db import DBSession
 
 
 class GenericCrudRouter(APIRouter):

@@ -1,17 +1,22 @@
 # funspark
 
-## Starting with the project
+## Starting up the backend
 
-To start the aplication run the command
+To start the backend run the following command:
 
 ```sh
 make up
 ```
 
-To stop the aplication rin the command:
+To stop the aplication run the folowwing command:
 
 ```sh
 make down
+```
+## Testing
+To run the tests the database is used and each test case is wrapped in a transaction. This ensures that all databases operations are rollbacked after the tests are completed. To run all the tests execute this command:
+```sh
+make tests
 ```
 
 ## Generic CRUD

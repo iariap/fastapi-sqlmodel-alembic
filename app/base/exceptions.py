@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlalchemy.exc import NoResultFound
 
 

@@ -11,7 +11,13 @@
                 "--reload"
             ],
             "envFile": "${workspaceFolder}/app/.env",
-            "justMyCode": true
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Tests FastAPI",
+            "type": "python",
+            "request": "tests",
+            "justMyCode": false
         }
     ]
 }

@@ -65,13 +65,13 @@ migrate:
 
 ##@ Testing
 # Run tests with pytest
-test:
-	pytest app/tests
+test: run-db
+	pytest .
 
 ##@ Linting
 # Lint code with Ruff
 lint:
-	$(RUFF) app/
+	$(RUFF) --fix .
 
 # Phony targets
 .PHONY: help up down run-backend run-db reset-db alembic-current alembic-upgrade alembic-downgrade alembic-revision migrate test lint

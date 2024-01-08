@@ -1,8 +1,7 @@
 from fastapi_pagination import LimitOffsetPage
-from sqlmodel.ext.asyncio.session import AsyncSession
-
 from songs.crud import song_crud
 from songs.models import Song, SongCreate
+from sqlmodel.ext.asyncio.session import AsyncSession
 
 
 async def create(session: AsyncSession, song: SongCreate) -> Song:
