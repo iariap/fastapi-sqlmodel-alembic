@@ -69,3 +69,7 @@ class GenericCRUD[
             select(self.model_type).order_by(self.model_type.id),
             subquery_count=False,
         )
+
+    async def get_all(self, db: AsyncSession) -> list[ModelType]:
+        result = await db.exec(select(self.model_type).order_by(self.model_type.id))
+        return result.all()

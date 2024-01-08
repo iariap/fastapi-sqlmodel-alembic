@@ -20,17 +20,22 @@ dependencies = [
     "pytest-asyncio==0.23.3",
     "pre-commit==3.6.0",
     "ruff==0.1.11",
+    "nest_asyncio==1.5.8",
+    "pytest-cov"
 ]
 
 [tool.hatch.build.targets.wheel]
 packages = ["backend"]
 
 [tool.pytest.ini_options]
-addopts = "-ra -q"
+addopts = "-vv -rA --disable-warnings --cov=app --cov-report term-missing"
 testpaths = [
     "tests",
 ]
 asyncio_mode = "auto"
+pythonpath = [
+  "app"
+]
 
 
 [tool.ruff]

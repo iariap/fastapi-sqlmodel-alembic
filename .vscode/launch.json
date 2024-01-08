@@ -7,10 +7,17 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "main:app",
+                "app.main:app",
                 "--reload"
             ],
-            "justMyCode": true
+            "envFile": "${workspaceFolder}/app/.env",
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Tests FastAPI",
+            "type": "python",
+            "request": "tests",
+            "justMyCode": false
         }
     ]
 }

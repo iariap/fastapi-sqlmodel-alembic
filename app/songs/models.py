@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel
 
-from base.models import TimestampModel, UUIDModel
+from app.base.models import TimestampModel, UUIDModel
 
 
 class SongBase(SQLModel):
