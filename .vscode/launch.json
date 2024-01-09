@@ -10,7 +10,7 @@
                 "app.main:app",
                 "--reload"
             ],
-            "envFile": "${workspaceFolder}/app/.env",
+            // "envFile": "${workspaceFolder}/app/.env",
             "justMyCode": false
         },
         {
