@@ -1,11 +1,18 @@
 # Makefile for managing a FastAPI application with Alembic and Docker
 
 # Variables
+MIN_PYTHON_VERSION = 3.12
+
 DOCKER_COMPOSE = docker compose
 COMPOSE_FILE = -f docker-compose.yml
 ALEMBIC = alembic -c /backend/app/alembic.ini
 RUFF = ruff
 MAKEFLAGS += --no-print-directory
+SHELL := /bin/bash
+
+GREEN=\033[0;32m
+RED=\033[0;31m
+NC=\033[0m # No Color
 
 
 # Help
@@ -15,6 +22,24 @@ help:
 	@echo ""
 	@echo "Targets:"
 	@awk '/^# / { help_message = substr($$0, 3); next } /^[a-zA-Z_-]+:/ { if (help_message) print "  \033[36m" $$1 "\033[0m" help_message; help_message = "" }' $(MAKEFILE_LIST)
+
+check-python-version:
+	@echo "Checking Python version..."
+	@(python --version 2>&1 | grep "Python ${MIN_PYTHON_VERSION}" ) || (python3 --version 2>&1 | grep -q "Python 12" ) || \
+	(echo -e "${RED}Error: Python 12 is not installed" && exit 1)
+
+check-docker-version:
+	@echo "Checking Docker version..."
+	@(docker --version 2>&1 | grep -q "Docker version 2") || \
+	(echo -e "${RED}Error: Docker version 2 is not installed." && exit 1)
+
+##@ Environment
+# Setup development environment for the first time
+setup-environment: check-python-version check-docker-version
+	@echo "Setting up the environment..."
+	@bash -c "python -m venv .venv"
+	@bash -c "source .venv/bin/activate && pip install --upgrade pip > /dev/null 2>&1 && pip install . > /dev/null 2>&1 && pre-commit install > /dev/null 2>&1"
+	@echo -e "${GREEN}Environment is ready. Now run 'source .venv/bin/activate' from the commandline to activate the environment${NC}"
 
 ##@ Docker
 # Start Docker containers
