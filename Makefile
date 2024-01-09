@@ -23,27 +23,10 @@ help:
 	@echo "Targets:"
 	@awk '/^# / { help_message = substr($$0, 3); next } /^[a-zA-Z_-]+:/ { if (help_message) print "  \033[36m" $$1 "\033[0m" help_message; help_message = "" }' $(MAKEFILE_LIST)
 
-check-python-version:
-	@echo "Checking Python version..."
-	@(python --version 2>&1 | grep "Python ${MIN_PYTHON_VERSION}" ) || (python3 --version 2>&1 | grep -q "Python 12" ) || \
-	(echo -e "${RED}Error: Python 12 is not installed" && exit 1)
-
-check-docker-version:
-	@echo "Checking Docker version..."
-	@(docker --version 2>&1 | grep -q "Docker version 2") || \
-	(echo -e "${RED}Error: Docker version 2 is not installed." && exit 1)
-
-##@ Environment
-# Setup development environment for the first time
-setup-environment: check-python-version check-docker-version
-	@echo "Setting up the environment..."
-	@bash -c "python -m venv .venv"
-	@bash -c "source .venv/bin/activate && pip install --upgrade pip > /dev/null 2>&1 && pip install . > /dev/null 2>&1 && pre-commit install > /dev/null 2>&1"
-	@echo -e "${GREEN}Environment is ready. Now run 'source .venv/bin/activate' from the commandline to activate the environment${NC}"
-
 ##@ Docker
 # Start Docker containers
 up:
+	$(DOCKER_COMPOSE) $(COMPOSE_FILE) build
 	$(DOCKER_COMPOSE) $(COMPOSE_FILE) up --remove-orphans
 
 # Stop Docker containers
@@ -67,7 +50,7 @@ reset-db:
 
 ##@ Alembic
 # Show current Alembic revision
-alembic-current: 
+alembic-current:
 	$(DOCKER_COMPOSE) $(COMPOSE_FILE) run backend $(ALEMBIC) current
 
 
@@ -103,3 +86,25 @@ lint:
 
 # Set the default goal to 'help' when no target is given
 .DEFAULT_GOAL := help
+
+# check-python-version
+check-python-version:
+	@echo "Checking Python ${MIN_PYTHON_VERSION}..."
+	@(python --version 2>&1 | grep -q "Python ${MIN_PYTHON_VERSION}" ) || (python3 --version 2>&1 | grep -q "Python 12" ) || \
+	(echo -e "${RED}Error: Python 12 is not installed" && exit 1)
+
+check-docker-version:
+	@echo "Checking if Docker 2 is installed..."
+	@(docker compose version 2>&1) || \
+	(echo -e "${RED}Error: Docker version 2 is not installed." && exit 1)
+
+check-poetry:
+	@echo "Checking if Poetry is installed..."
+	@command -v poetry >/dev/null 2>&1 || { echo "Installing Poetry..."; curl -sSL https://install.python-poetry.org | python3 -; }
+
+##@ Environment
+# Setup development environment for the first time
+setup-environment: check-docker-version check-python-version check-poetry
+	@echo "Setting up the environment..."
+	@bash -c "poetry env use python3.12 && poetry install"
+	@echo -e "${GREEN}Environment is ready. Now run 'poetry shell' from the commandline to activate the environment${NC}"

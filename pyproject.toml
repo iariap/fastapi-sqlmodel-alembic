@@ -1,28 +1,28 @@
-[build-system]
-requires = ["hatchling >= 1.13.0"]
-build-backend = "hatchling.build"
-
-
-[project]
+[tool.poetry]
 name = "fanspark"
 description = "FanSpark proposal template"
 version = "0.0.1"
-dependencies = [
-    "fastapi==0.108.0",
-    "uvicorn==0.22.0",
-    "sqlmodel==0.0.14",
-    "SQLAlchemy==2.0.25",
-    "alembic==1.13.1",
-    "asyncpg==0.29.0",
-    "pydantic-settings==2.1.0",
-    "fastapi-pagination==0.12.14",
-    "pytest==7.4.4",
-    "pytest-asyncio==0.23.3",
-    "pre-commit==3.6.0",
-    "ruff==0.1.11",
-    "nest_asyncio==1.5.8",
-    "pytest-cov"
-]
+authors=["the sparkers"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi="0.108.0"
+uvicorn="0.22.0"
+sqlmodel="0.0.14"
+SQLAlchemy="2.0.25"
+alembic="1.13.1"
+asyncpg="0.29.0"
+pydantic-settings="2.1.0"
+fastapi-pagination="0.12.14"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit="3.6.0"
+ruff="0.1.11"
+nest_asyncio="1.5.8"
+pytest-cov="4.1.0"
+pytest="7.4.4"
+pytest-asyncio="0.23.3"
+
 
 [tool.hatch.build.targets.wheel]
 packages = ["backend"]
