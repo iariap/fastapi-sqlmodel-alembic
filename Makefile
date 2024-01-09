@@ -106,5 +106,5 @@ check-poetry:
 # Setup development environment for the first time
 setup-environment: check-docker-version check-python-version check-poetry
 	@echo "Setting up the environment..."
-	@bash -c "poetry env use python3.12 && poetry install"
+	@bash -c "poetry env use python3.12 && poetry install --no-root && pre-commit install"
 	@echo -e "${GREEN}Environment is ready. Now run 'poetry shell' from the commandline to activate the environment${NC}"

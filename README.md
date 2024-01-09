@@ -1,5 +1,29 @@
 # funspark
 
+## Getting Started with the Project
+Before starting up the backend or running any commands, you need to set up the environment. This can be easily done using the make command. Simply run the following command in your terminal:
+```sh
+make setup-environment
+```
+The following steps are executed:
+
+1. **Check Docker Version**:
+   - The command checks if Docker version 2 is installed on your system. If it is not installed, it will display an error message indicating that Docker version 2 is not installed.
+
+2. **Check Python Version**:
+   - It verifies whether Python version 3.12 is installed. If Python 3.12 is not found, an error message is displayed.
+
+3. **Check and Install Poetry**:
+   - The command checks for the presence of Poetry, a Python dependency management and packaging tool. If Poetry is not installed, it is automatically installed using a script from the official Poetry website.
+
+4. **Setting Up the Environment**:
+   - After performing the checks, it sets up the Python environment using Poetry. This step involves using Python 3.12 for the environment and installing all dependencies specified in the project's `pyproject.toml` file.
+
+And then to open a terminal for the project run:
+```sh
+poetry shell
+```
+
 ## Starting up the backend
 
 To start the backend run the following command:
