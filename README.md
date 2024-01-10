@@ -2,10 +2,10 @@
 
 ## TODO
 - Database entities should be configured to be deleted both hard and soft (using a field like `deleted_at: datetime` as in `app.base.TimestampModel`)
-- Configure a in memory sqlite databaseto run tests. Consider creating a database at startup (by doing fixture scope="session"), running all migrations and rolback transaction after each test (as it is now)
-- Document properly how we want to handle crud/services tests and api tests. Basically they shoyld be places in separated files per model
-- Analize if we can discriminate what test to run (for example by tag unity, funcional, integration, and son on.
 - Include a model factory for tests (https://github.com/litestar-org/polyfactory)
+- ~~Configure a in memory sqlite databaseto run tests. Consider creating a database at startup (by doing fixture scope="session"), running all migrations and rolback transaction after each test (as it is now)~~
+- ~~Document properly how we want to handle crud/services tests and api tests. Basically they shoyld be places in separated files per model~~
+- ~~Analize if we can discriminate what test to run (for example by tag unity, funcional, integration, and son on.~~
 
 ## Getting Started with the Project
 Before starting up the backend or running any commands, you need to set up the environment. This can be easily done using the make command. Simply run the following command in your terminal:
