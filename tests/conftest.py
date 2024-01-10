@@ -1,8 +1,12 @@
 import pytest
 from alembic.config import Config
+from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
+from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
+
+from app.main import app
 
 # Async engine for in-memory SQLite database
 # db_url = "sqlite+aiosqlite:///:memory:"
@@ -27,13 +31,29 @@ async def sqla_engine():
         await engine.dispose()
 
 
+@pytest.fixture(scope="session")
+def api_client() -> TestClient:
+    return TestClient(app)
+
+
 @pytest.fixture(scope="function")
-async def db(sqla_engine):
+async def sqlite_engine():
+    engine = create_async_engine("sqlite+aiosqlite:///:memory:")
+    async with engine.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.create_all)
+    try:
+        yield engine
+    finally:
+        await engine.dispose()
+
+
+@pytest.fixture(scope="function")
+async def db(sqlite_engine):
     """
     Fixture that returns a SQLAlchemy session with a SAVEPOINT, and the rollback to it
     after the test completes.
     """
-    connection = await sqla_engine.connect()
+    connection = await sqlite_engine.connect()
     trans = await connection.begin()
 
     Session: AsyncSession = sessionmaker(
