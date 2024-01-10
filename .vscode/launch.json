@@ -13,10 +13,14 @@
             "justMyCode": false
         },
         {
-            "name": "Python: Tests FastAPI",
+            "name": "Debug Tests",
             "type": "python",
-            "request": "tests",
-            "justMyCode": false
+            "justMyCode": false,
+            "request": "test",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTEST_ADDOPTS": "--no-cov"
+            },
         }
     ]
 }

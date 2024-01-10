@@ -23,13 +23,11 @@ def upgrade() -> None:
         sa.Column(
             "id",
             sqlmodel.sql.sqltypes.GUID(),
-            server_default=sa.text("gen_random_uuid()"),
             nullable=False,
         ),
         sa.Column(
             "created_at",
             sa.DateTime(),
-            server_default=sa.text("current_timestamp(0)"),
             nullable=False,
         ),
         sa.Column("updated_at", sa.DateTime(), nullable=False),

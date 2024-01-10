@@ -72,9 +72,19 @@ migrate:
 	make alembic-revision m="enter_migration_message_here"
 
 ##@ Testing
-# Run tests with pytest
-test: run-db
-	pytest .
+
+# Run all tests with pytest
+test:
+	@pytest
+
+# Run model tests with pytest
+test-model:
+	@pytest -k 'not test_api'
+
+# Run integration tests with pytest
+test-api:
+	@pytest -k 'test_api'
+
 
 ##@ Linting
 # Lint code with Ruff

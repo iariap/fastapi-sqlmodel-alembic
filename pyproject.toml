@@ -14,6 +14,7 @@ alembic="1.13.1"
 asyncpg="0.29.0"
 pydantic-settings="2.1.0"
 fastapi-pagination="0.12.14"
+httpx = "^0.26.0"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit="3.6.0"
@@ -22,6 +23,7 @@ nest_asyncio="1.5.8"
 pytest-cov="4.1.0"
 pytest="7.4.4"
 pytest-asyncio="0.23.3"
+aiosqlite = "^0.19.0"
 
 
 [tool.hatch.build.targets.wheel]
@@ -34,7 +36,7 @@ testpaths = [
 ]
 asyncio_mode = "auto"
 pythonpath = [
-  "app"
+    "."
 ]
 
 

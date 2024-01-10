@@ -58,6 +58,35 @@ To run the `funspark` project locally using VSCode, follow these steps:
    - Select `FastAPI` from the dropdown list of configurations.
    - Entrer `app.main:app` as the app entrypoint.
    - Optionally you could also specify to watch for code changes using the `--reload` parameter.
+   Coverage should not run along with pytest  because they collide, so edit the `.vscode/launch.json` file like this:
+   ```json
+   {
+      "version": "0.2.0",
+      "configurations": [
+         {
+            "name": "Python: FastAPI",
+            "type": "python",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+               "app.main:app",
+               "--reload"
+            ],
+            "justMyCode": false
+         },
+         {
+            "name": "Debug Tests",
+            "type": "python",
+            "justMyCode": false,
+            "request": "test",
+            "console": "integratedTerminal",
+            "env": {
+               "PYTEST_ADDOPTS": "--no-cov"
+            },
+         }
+      ]
+   }
+```
 
 6. **Access the Application**:
    - Once the project is running, you can access the application through the specified URL in a web browser. The URL will depend on how the project is configured (e.g., `http://localhost:8000` for a web application).
@@ -222,6 +251,36 @@ pre-commit autoupdate
 ```
 
 This will update your hooks to the latest versions specified in the configuration file.
+
+## Testing
+When writing tests:
+- **`test_api_some_entity.py`**: This file should contain tests that focus on the API layer of the songs functionality. Here, you should write tests that make requests to your API endpoints and assert the responses.
+- **`test_some_entity.py`**: This file is intended for unit tests that directly interact with the model or services functionalities, independent of the API layer. These tests are crucial for ensuring the internal logic of your application works as expected.
+
+### Running Tests
+The Makefile of the project includes commands to facilitate running tests easily.
+
+1. **Running All Tests**:
+   - To run all tests, use the following command in the terminal:
+     ```sh
+     make test
+     ```
+   - This will execute all test cases, including both unit tests and API tests.
+
+2. **Running API Tests**:
+   - If you want to run only the API tests, use:
+     ```sh
+     make test-api
+     ```
+   - This command runs tests with a naming pattern that matches 'test_api', ensuring only API tests are executed.
+
+3. **Running Models Tests**:
+   - If you want to run only the API tests, use:
+     ```sh
+     make test-model
+     ```
+   - This command runs tests with a naming pattern that does not matches 'test_api', ensuring only model tests are executed.
+
 
 ## Alembic Workflow
 
