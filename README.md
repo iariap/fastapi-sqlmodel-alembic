@@ -85,8 +85,7 @@ To run the `funspark` project locally using VSCode, follow these steps:
             },
          }
       ]
-   }
-```
+   }```
 
 6. **Access the Application**:
    - Once the project is running, you can access the application through the specified URL in a web browser. The URL will depend on how the project is configured (e.g., `http://localhost:8000` for a web application).
