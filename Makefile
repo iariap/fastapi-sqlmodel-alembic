@@ -90,8 +90,8 @@ lint:
 # check-python-version
 check-python-version:
 	@echo "Checking Python ${MIN_PYTHON_VERSION}..."
-	@(python --version 2>&1 | grep -q "Python ${MIN_PYTHON_VERSION}" ) || (python3 --version 2>&1 | grep -q "Python 12" ) || \
-	(echo -e "${RED}Error: Python 12 is not installed" && exit 1)
+	@(python --version 2>&1 | grep -q "Python ${MIN_PYTHON_VERSION}" ) || (python3 --version 2>&1 | grep -q "Python ${MIN_PYTHON_VERSION}" ) || \
+	(echo -e "${RED}Error: Python ${MIN_PYTHON_VERSION} is not installed" && exit 1)
 
 check-docker-version:
 	@echo "Checking if Docker 2 is installed..."

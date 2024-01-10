@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi_pagination import add_pagination
 
@@ -14,3 +15,6 @@ app.include_router(tooling_router)
 
 add_pagination(app)
 add_exceptions_handlers(app)
+
+if __name__ == "__main__":
+    uvicorn.run("app.main:app", reload=True, workers=3)

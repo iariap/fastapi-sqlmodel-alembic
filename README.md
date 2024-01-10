@@ -1,5 +1,12 @@
 # funspark
 
+## TODO
+- Database entities should be configured to be deleted both hard and soft (using a field like `deleted_at: datetime` as in `app.base.TimestampModel`)
+- Configure a in memory sqlite databaseto run tests. Consider creating a database at startup (by doing fixture scope="session"), running all migrations and rolback transaction after each test (as it is now)
+- Document properly how we want to handle crud/services tests and api tests. Basically they shoyld be places in separated files per model
+- Analize if we can discriminate what test to run (for example by tag unity, funcional, integration, and son on.
+- Include a model factory for tests (https://github.com/litestar-org/polyfactory)
+
 ## Getting Started with the Project
 Before starting up the backend or running any commands, you need to set up the environment. This can be easily done using the make command. Simply run the following command in your terminal:
 ```sh
@@ -23,6 +30,71 @@ And then to open a terminal for the project run:
 ```sh
 poetry shell
 ```
+
+# Running locally
+## vscode
+## Running the Project Locally with Visual Studio Code (VSCode)
+
+To run the `funspark` project locally using VSCode, follow these steps:
+
+1. **Open the Project in VSCode**:
+   - Start by opening the `funspark-main` folder in VSCode.
+
+2. **Setup the Environment**:
+   - Before running the project, ensure that you have set up the environment. Run the `make setup-environment` command in the terminal to prepare your environment.
+
+3. **Activate the Python Environment**:
+   - In the VSCode terminal, activate the Python environment created by Poetry by running:
+     ```sh
+     poetry shell
+     ```
+   - This step is crucial to ensure that VSCode uses the correct Python interpreter and dependencies.
+
+4. **Install VSCode Extensions**:
+   - Install recommended VSCode extensions for Python and Docker to enhance your development experience. These extensions provide features like IntelliSense, code navigation, and Docker integration (Optional).
+
+5. **Run the Project**:
+   - Press Ctrl+`F5` to run the project.
+   - Select `FastAPI` from the dropdown list of configurations.
+   - Entrer `app.main:app` as the app entrypoint.
+   - Optionally you could also specify to watch for code changes using the `--reload` parameter.
+
+6. **Access the Application**:
+   - Once the project is running, you can access the application through the specified URL in a web browser. The URL will depend on how the project is configured (e.g., `http://localhost:8000` for a web application).
+
+7. **Debugging**:
+   - To debug your application, you can use the debugging features provided by VSCode. Set breakpoints in your code and start a debug session using the debug panel in VSCode.
+
+
+## pycharm
+## Running the Project Locally in PyCharm
+
+To run the `funspark` project locally using PyCharm, follow these steps:
+
+1. **Open the Project in PyCharm**:
+   - Start by opening the `funspark-main` folder in PyCharm.
+
+2. **Setup the Environment**:
+   - Before running the project, ensure that you have set up the environment. In the PyCharm terminal, run the `make setup-environment` command to prepare your environment. PyCharm will suggest to use pyproject.toml, this is also valid.
+
+3. **Activate the Python Environment**:
+   - In the PyCharm terminal, activate the Python environment created by Poetry by running:
+     ```sh
+     poetry shell
+     ```
+   - This step is essential to ensure that PyCharm uses the correct Python interpreter and dependencies.
+
+4. **Configure PyCharm for the Project**:
+   - Configure your PyCharm to recognize the Python interpreter set up by Poetry. Go to `File > Settings > Project: funspark-main > Python Interpreter`, and select the Python interpreter from the virtual environment created by Poetry.
+   - Optionally, install PyCharm extensions or plugins that facilitate Python and FastAPI development.
+
+5. **Run the Project**:
+   - Right-click on the file containing the main entry point of your FastAPI application (typically `main.py` or similar) in PyCharm and select `Run 'filename'`.
+   - To enable automatic reloading on code changes, ensure the `--reload` parameter is included in the run configuration.
+
+6. **Access the Application**:
+   - Once the project is running, access the application through the specified URL in a web browser, such as `http://localhost:8000`.
+
 
 ## Starting up the backend
 

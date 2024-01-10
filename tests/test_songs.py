@@ -29,4 +29,5 @@ async def test_crud_get_all_should_be_empty(db: AsyncSession):
 @pytest.mark.asyncio
 @patch("app.songs.crud.song_crud.get_all", AsyncMock(return_value=["Hola"]))
 async def test():
-    ...
+    result = await song_crud.get_all(None)
+    assert result == ["Hola"]
