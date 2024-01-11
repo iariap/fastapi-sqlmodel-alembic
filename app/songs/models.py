@@ -1,6 +1,6 @@
 from sqlmodel import SQLModel
 
-from app.base.models import SoftDeleteModel, TimestampModel, UUIDModel
+from app.base.models import TimestampModel, UUIDModel
 
 
 class SongBase(SQLModel):
@@ -9,7 +9,7 @@ class SongBase(SQLModel):
     year: int | None = None
 
 
-class Song(SongBase, TimestampModel, UUIDModel, SoftDeleteModel, table=True):
+class Song(SongBase, TimestampModel, UUIDModel, table=True):
     ...
 
 
