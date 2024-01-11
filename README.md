@@ -1,7 +1,7 @@
 # funspark
 
 ## TODO
-- Database entities should be configured to be deleted both hard and soft (using a field like `deleted_at: datetime` as in `app.base.TimestampModel`)
+- ~~Database entities should be configured to be deleted both hard and soft (using a field like `deleted_at: datetime` as in `app.base.TimestampModel`)~~
 - ~~Include a model factory for tests (https://github.com/litestar-org/polyfactory)~~
 - ~~Configure a in memory sqlite databaseto run tests. Consider creating a database at startup (by doing fixture scope="session"), running all migrations and rolback transaction after each test (as it is now)~~
 - ~~Document properly how we want to handle crud/services tests and api tests. Basically they shoyld be places in separated files per model~~
@@ -163,7 +163,7 @@ class SongBase(SQLModel):
     artist: str
     year: int | None = None
 
-class Song(SongBase, TimestampModel, UUIDModel, table=True):
+class Song(SongBase, TimestampModel, UUIDModel, SoftDeleteModel, table=True):
     ...
 
 class SongCreate(SongBase):
@@ -179,6 +179,42 @@ class SongUpdate(SongBase):
 ```python
 item_crud = GenericCRUD[Item, ItemCreate, ItemUpdate](Item)
 ```
+
+## Understanding the Models: `TimestampModel`, `UUIDModel`, and `SoftDeleteModel`
+
+In the given code, three models are defined: `TimestampModel`, `UUIDModel`, and `SoftDeleteModel`. Each model serves a specific purpose.
+
+### `UUIDModel`
+
+- **Purpose**: The `UUIDModel` is designed to provide a unique identifier for each record in a database table.
+- **Attributes**:
+  - `id`: A field that stores a unique identifier for each record. It uses the UUID (Universally Unique Identifier) format.
+- **Characteristics**:
+  - The UUID is generated using Python's `uuid.uuid4()` function, which creates a random, unique UUID.
+  - The `id` field is marked as a primary key and is indexed for faster queries.
+  - The field is non-nullable, meaning it must always have a value.
+  - It is set to be unique across the model.
+
+### `TimestampModel`
+
+- **Purpose**: The `TimestampModel` provides timestamp fields for tracking the creation and last update times of a record.
+- **Attributes**:
+  - `created_at`: The datetime when the record was created.
+  - `updated_at`: The datetime when the record was last updated.
+- **Characteristics**:
+  - Both fields use `datetime.utcnow` as the default value, which sets the time to the current UTC time when the record is created.
+  - The fields are non-nullable.
+  - The `updated_at` field is designed to be updated whenever the record is modified, though the mechanism for this update (e.g., database triggers) might need to be enabled separately.
+
+### `SoftDeleteModel`
+
+- **Purpose**: The `SoftDeleteModel` is used for soft deletion of records, a technique where records are not physically deleted from the database but are marked as deleted.
+- **Attributes**:
+  - `deleted_at`: The datetime when the record was marked as deleted.
+- **Characteristics**:
+  - This field is nullable, meaning it can hold a null value to indicate the record has not been deleted.
+  - When a record is "soft deleted," this field is set to the current datetime.
+  - Queries can then be written to exclude records where `deleted_at` is not null, effectively hiding soft-deleted records from normal use.
 
 ## Generic Router
 
