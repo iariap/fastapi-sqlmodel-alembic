@@ -6,6 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlmodel import SQLModel
 from sqlmodel.ext.asyncio.session import AsyncSession
 
+from app.base.db import get_session
 from app.main import app
 
 # Async engine for in-memory SQLite database
@@ -19,24 +20,7 @@ cfg = Config(__config_path__)
 cfg.set_main_option("script_location", __migration_path__)
 
 
-# https://github.com/igortg/pytest-async-sqlalchemy/blob/master/pytest_async_sqlalchemy.py
-@pytest.fixture(scope="function")
-async def sqla_engine():
-    engine = create_async_engine(
-        "postgresql+asyncpg://postgres:postgres@db:5432/fanspark"
-    )
-    try:
-        yield engine
-    finally:
-        await engine.dispose()
-
-
 @pytest.fixture(scope="session")
-def api_client() -> TestClient:
-    return TestClient(app)
-
-
-@pytest.fixture(scope="function")
 async def sqlite_engine():
     engine = create_async_engine("sqlite+aiosqlite:///:memory:")
     async with engine.begin() as conn:
@@ -67,3 +51,11 @@ async def db(sqlite_engine):
         await session.close()
         await trans.rollback()
         await connection.close()
+
+
+@pytest.fixture(scope="function")
+def api_client(db) -> TestClient:
+    # replace the app dependency to get the database with test database
+    app.dependency_overrides[get_session] = lambda: db
+
+    return TestClient(app)
