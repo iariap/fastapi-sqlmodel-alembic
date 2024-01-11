@@ -2,7 +2,7 @@
 
 ## TODO
 - Database entities should be configured to be deleted both hard and soft (using a field like `deleted_at: datetime` as in `app.base.TimestampModel`)
-- Include a model factory for tests (https://github.com/litestar-org/polyfactory)
+- ~~Include a model factory for tests (https://github.com/litestar-org/polyfactory)~~
 - ~~Configure a in memory sqlite databaseto run tests. Consider creating a database at startup (by doing fixture scope="session"), running all migrations and rolback transaction after each test (as it is now)~~
 - ~~Document properly how we want to handle crud/services tests and api tests. Basically they shoyld be places in separated files per model~~
 - ~~Analize if we can discriminate what test to run (for example by tag unity, funcional, integration, and son on.~~
@@ -59,7 +59,7 @@ To run the `funspark` project locally using VSCode, follow these steps:
    - Entrer `app.main:app` as the app entrypoint.
    - Optionally you could also specify to watch for code changes using the `--reload` parameter.
    Coverage should not run along with pytest  because they collide, so edit the `.vscode/launch.json` file like this:
-   ```json
+```json
    {
       "version": "0.2.0",
       "configurations": [
@@ -85,7 +85,8 @@ To run the `funspark` project locally using VSCode, follow these steps:
             },
          }
       ]
-   }```
+   }
+```
 
 6. **Access the Application**:
    - Once the project is running, you can access the application through the specified URL in a web browser. The URL will depend on how the project is configured (e.g., `http://localhost:8000` for a web application).
@@ -256,7 +257,55 @@ When writing tests:
 - **`test_api_some_entity.py`**: This file should contain tests that focus on the API layer of the songs functionality. Here, you should write tests that make requests to your API endpoints and assert the responses.
 - **`test_some_entity.py`**: This file is intended for unit tests that directly interact with the model or services functionalities, independent of the API layer. These tests are crucial for ensuring the internal logic of your application works as expected.
 
-### Running Tests
+### Testing
+## Writting tests
+Suppose we want to write tests for the Song model you could have a folder structure like this:
+```
+tests
+└── songs
+    ├── factories.py
+    ├── test_api_songs.py
+    └── test_songs.py
+```
+Where:
+- **factories.py**: Contains the factories for creating instances of your Pydantic models with test data.
+   ```python
+   from app.songs.models import SongCreate
+
+
+   class SongCreationFactory(ModelFactory[SongCreate]):
+      __model__ = SongCreate
+
+   ```
+- **test_api_songs.py**: Contains tests that make requests to your API endpoints and assert the responses.
+   ```python
+   async def test_create(api_client: TestClient):
+      result = api_client.get("/songs")
+      assert result
+      assert result.status_code == 200
+
+      result = result.json()
+      assert len(result["items"]) == 0
+      assert result["total"] == 0
+      assert result["limit"] == 50
+      assert result["offset"] == 0
+   ```
+   `api_client` is injected by pytest dependency injection.
+-
+- **test_songs.py**: Contains tests that directly interact with the model or services functionalities, independent of the API layer. These tests are crucial for ensuring the internal logic of your application works as expected.
+   ```python
+   @pytest.mark.asyncio
+   async def test_crud_create(db: AsyncSession):
+      song_data = SongCreationFactory.build()
+      result = await song_crud.create(
+         db,
+         obj_in=song_data.model_dump(),
+      )
+      assert result
+      assert result.id
+   ```
+
+## Running tests
 The Makefile of the project includes commands to facilitate running tests easily.
 
 1. **Running All Tests**:
