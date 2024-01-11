@@ -4,17 +4,15 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.songs.crud import song_crud
+from tests.songs.factories import SongCreationFactory
 
 
 @pytest.mark.asyncio
 async def test_crud_create(db: AsyncSession):
+    sond_data = SongCreationFactory.build()
     result = await song_crud.create(
         db,
-        obj_in={
-            "name": "test",
-            "artist": "test",
-            "year": 2024,
-        },
+        obj_in=sond_data.model_dump(),
     )
     assert result
     assert result.id
