@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import Any, Dict, Type
 
 from fastapi.encoders import jsonable_encoder
@@ -7,8 +6,6 @@ from fastapi_pagination.ext.sqlalchemy import paginate as fap_paginate
 from pydantic import BaseModel
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
-
-from app.base.models import SoftDeleteModel
 
 
 class GenericCRUD[
@@ -27,17 +24,8 @@ class GenericCRUD[
         """
         self.model_type = model_type
 
-    def get_soft_delete_filtering(self, statement):
-        """If the model is soft delete, then filter out the deleted items"""
-        if issubclass(self.model_type, SoftDeleteModel):
-            statement = statement.filter(self.model_type.deleted_at == None)
-        return statement
-
     async def get(self, db: AsyncSession, id: Any) -> ModelType:
-        statement = select(self.model_type).filter(self.model_type.id == id)
-        statement = self.get_soft_delete_filtering(statement)
-
-        result = await db.exec(statement)
+        result = await db.exec(select(self.model_type).filter(self.model_type.id == id))
         answer = result.one()
         return answer
 
@@ -71,29 +59,17 @@ class GenericCRUD[
 
     async def remove(self, db: AsyncSession, *, id: int) -> ModelType:
         obj = await self.get(db, id)
-
-        if issubclass(self.model_type, SoftDeleteModel):
-            obj.deleted_at = datetime.utcnow()
-        else:
-            await db.delete(obj)
+        await db.delete(obj)
         await db.commit()
         return obj
 
     async def paginate(self, db: AsyncSession) -> LimitOffsetPage[ModelType]:
-        statement = select(self.model_type).order_by(self.model_type.id)
-
-        statement = self.get_soft_delete_filtering(statement)
-
         return await fap_paginate(
             db,
-            statement,
+            select(self.model_type).order_by(self.model_type.id),
             subquery_count=False,
         )
 
     async def get_all(self, db: AsyncSession) -> list[ModelType]:
-        statement = select(self.model_type).order_by(self.model_type.id)
-
-        statement = self.get_soft_delete_filtering(statement)
-
-        result = await db.exec(statement)
+        result = await db.exec(select(self.model_type).order_by(self.model_type.id))
         return result.all()

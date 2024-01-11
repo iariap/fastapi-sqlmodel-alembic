@@ -31,7 +31,3 @@ class TimestampModel(SQLModel):
             # "onupdate": text("current_timestamp(0)"),
         },
     )
-
-
-class SoftDeleteModel(SQLModel):
-    deleted_at: datetime = Field(nullable=True)
