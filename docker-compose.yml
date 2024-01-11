@@ -9,7 +9,7 @@ services:
         INSTALL_DEV: ${INSTALL_DEV-true}
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2 --reload
     volumes:
-      - ./app:/app
+      - ./app:/backend/app
     ports:
       - 8000:8000
       - 5678:5678
